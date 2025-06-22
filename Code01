@@ -1,5 +1,6 @@
 // Segment pins connected to Arduino (a to g)
 const int segmentPins[7] = {2, 3, 4, 5, 6, 7, 8};  // a, b, c, d, e, f, g
+const int dotPin = 9;  // Decimal point pin
 
 // Segment patterns for digits 0–9 (common cathode)
 // Format: {a, b, c, d, e, f, g}
@@ -11,7 +12,7 @@ const bool digitPatterns[10][7] = {
   {0, 1, 1, 0, 0, 1, 1},  // 4
   {1, 0, 1, 1, 0, 1, 1},  // 5
   {1, 0, 1, 1, 1, 1, 1},  // 6
-  {1, 1, 1, 0, 0, 0, 0},  // 7
+  {1, 1, 1, 0, 0, 0, 0},  // 7  
   {1, 1, 1, 1, 1, 1, 1},  // 8
   {1, 1, 1, 1, 0, 1, 1}   // 9
 };
@@ -20,6 +21,7 @@ void setup() {
   for (int i = 0; i < 7; i++) {
     pinMode(segmentPins[i], OUTPUT);
   }
+  pinMode(dotPin, OUTPUT); // Set dot pin as output
 }
 
 void loop() {
@@ -37,6 +39,10 @@ void loop() {
     for (int i = 0; i < 7; i++) {
       digitalWrite(segmentPins[i], digitPatterns[digit][i] ? HIGH : LOW);
     }
-    delay(1000);
+
+    digitalWrite(dotPin, HIGH);  // Turn on the dot with the digit
+    delay(1000);                 // Wait 1 second while digit is displayed
+    digitalWrite(dotPin, LOW);   // Turn off the dot before next digit
+    delay(90);
   }
 }
